@@ -1,0 +1,190 @@
+<openerp>
+  <data>
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="view_partner_form">
+      <field name="name">res.partner.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field eval="10" name="priority"/>
+      <field name="arch" type="xml">
+
+<field name="image" position="after">
+      <field name="image_firma" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_medium&quot;, &quot;size&quot;: [100, 100]}"/>
+      </field>
+	<field name="company_type" position="after">
+      		<field name="fecha_activacion"/>
+      	</field>
+
+      <field name="lang" position="after">
+	      <field name="pregunta_secreta" />
+	      <field name="respuesta_secreta" />
+      </field>
+      <field name="category_id" position="after">
+	      <field name="lugar_nacimiento" />
+	      <field name="fecha_nacimiento" />
+	      <field name="edad" readonly="1" />
+	      <field name="genero" />
+	</field>
+      <xpath expr="//notebook/page[@name='internal_notes']" position="after">
+	<page name="cuentas" string="Cuentas">
+	      <field name="cuenta_ids" />
+		<group>
+	
+		  <field name="bank_account_count" />
+		  <field name="bank_ids" />
+		</group>
+      	</page>
+	<page name="adjuntos" string="Documentos y Garantias">
+		<group col="8">
+			<group colspan="2">	
+			<field name="adjunto_ids"/>
+			
+			
+			</group>
+			<group colspan="6">	
+
+			</group>
+		</group>	
+	</page>
+
+
+
+	<page name="ReferenciasGarantes" string="Referencias y Garantes">
+		<group>	
+			<field name="relacion_id" widget="many2many_tags" placeholder=" Seleccione relacion.. " attrs="{'invisible': [('parent_id','=', [])]}"/>
+			<field name="child_ids" widget="kanban"/>
+		</group>
+      	</page>
+      </xpath>
+	      
+	
+        <xpath expr="//notebook/page/group/group/field[@name='customer']" position="after">
+          <field name="socio"/>  
+        </xpath>
+      </field>
+    </record> 
+   <!--div name="button_box" position="inside">
+	<button class="oe_stat_button" type="action" name="cuentas" attrs="{'invisible': [('socios', '=', False)]}" icon="fa-usd">
+        <field string="Cuentas" name="fin_socios" widget="statinfo"/>
+        </button>     
+   </div-->
+
+    <record model="ir.ui.view" id="fin_ajunto_list">
+      <field name="name">fin.adjuntos.list</field>
+      <field name="model">fin.adjuntos</field>
+      <field name="arch" type="xml">
+	<tree>
+		<field name="name"/>
+		<field name="tipo_adjunto" />
+		<field name="active"/>		  
+	</tree>
+      </field>
+    </record>
+   
+    <!-- actions opening views on models -->
+    <record model="ir.ui.view" id="fin_adjuntos_form">
+      <field name="name">fin.adjuntos.form</field>
+      <field name="model">fin.adjuntos</field>
+      <field name="arch" type="xml">
+        <form>
+	<group col="6">
+		<group colspan="2">
+			<field name="active" />		        
+			<field name="tipo_adjunto" />
+			<field name="fecha_regitro" />
+		</group>	
+		<group colspan="4">	
+			<field name="name"  invisible="0"/>
+			<field widget="binary" height="64" name="image_doc" filename="name" />
+			<field name="partner_id" readonly="True"/>
+		</group>
+	</group>
+	</form>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="fin_cuentas_list">
+      <field name="name">fin.cuentas.list</field>
+      <field name="model">fin.cuentas</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="tipo_cuenta"/>
+          <field name="debe"/>
+          <field name="haber"/>
+          <field name="fecha_apertura"/>
+          <field name="fecha_cierre"/>
+          <field name="account_debe_id"/>
+          <field name="account_haber_id"/>
+        </tree>
+      </field>
+    </record>
+   
+    <!-- actions opening views on models -->
+    <record model="ir.ui.view" id="fin_cuentas_form">
+      <field name="name">fin.cuentas.form</field>
+      <field name="model">fin.cuentas</field>
+      <field name="arch" type="xml">
+        <form>
+	<group>
+		<group>
+		  <field name="name"/>
+		  <field name="tipo_cuenta"/>
+		  <field name="fecha_apertura"/>
+		  <field name="debe"/>
+		  <field name="account_debe_id"/>
+		</group>   
+		<group>
+		  <field name="active" />
+		  <field name="fecha_cierre"/>
+		  <field name="haber"/>
+		  <field name="account_haber_id"/>
+		</group>
+	</group>       
+	
+ 	</form>
+      </field>
+    </record>
+
+    <!--
+    <record model="ir.actions.act_window" id="fin_socios.action_window">
+      <field name="name">fin_socios window</field>
+      <field name="res_model">fin_socios.fin_socios</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="fin_socios.action_server">
+      <field name="name">fin_socios server</field>
+      <field name="model_id" ref="model_fin_socios_fin_socios"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="fin_socios" id="fin_socios.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="fin_socios.menu_1" parent="fin_socios.menu_root"/>
+    <menuitem name="Menu 2" id="fin_socios.menu_2" parent="fin_socios.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="fin_socios.menu_1_list" parent="fin_socios.menu_1"
+              action="fin_socios.action_window"/>
+    <menuitem name="Server to list" id="fin_socios" parent="fin_socios.menu_2"
+              action="fin_socios.action_server"/>
+    -->
+  </data>
+</openerp>

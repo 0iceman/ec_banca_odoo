@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fin_socios_fin_socios,fin_socios.fin_socios,model_fin_socios_fin_socios,,1,0,0,0
+access_fin_cuentas_fin_cuentas,fin.cuentas,model_fin_cuentas,group_fin_cuentas,1,1,1,1
+
+
